@@ -1,8 +1,19 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+
 from .models import Chai_varity, Store
 from .forms import Chai_varity_Form  # Ensure the correct form name is used
 
+# def order_chai(request, chai_id):
+#     if request.method == "POST":
+#         quantity = request.POST.get('quantity')
+#         preferences = request.POST.get('preferences')
+#         # Here you would typically handle the order logic, e.g., saving to the database
+#         # For now, we will just redirect to the all_chai view after submission
+#         return redirect('chai:all_chai')
+
+
 def all_chai(request):
+
     chais = Chai_varity.objects.all()
     return render(request, 'chai/all_chai.html', {'chais': chais})
 

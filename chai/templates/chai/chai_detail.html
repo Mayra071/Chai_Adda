@@ -1,5 +1,29 @@
 {% extends "manish.html" %}
-<h1>{{ chai.name }}</h1>
+{% block content %}
+<img src="{{ chai.image.url }}" alt="{{ chai.name }} " class="w-50 h-60 rounded-3xl shadow">
+<h1 class ="text-justify">{{ chai.name }}</h1>
 <p>{{ chai.description }}</p>
-<img src="{{ chai.image.url }}" alt="{{ chai.name }}">
 
+<h2>Order Your Chai</h2>
+<form action="/submit_order" method="POST">
+    <label for="name">Your Name:</label>
+    <input type="text" id="name" name="name" required style="color: white; background-color: black;">
+   
+    
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" name="quantity" min="1" max="10" required style="color: white; background-color: black;">
+    
+    <label for="sugar">Sugar Level:</label>
+        <select id="sugar" name="sugar" style="background-color: black; color: white;">
+            <option value="normal">Normal</option>
+            <option value="less">Less Sugar</option>
+            <option value="no">No Sugar</option>
+        </select>
+    
+    <button type="submit" style="background-color: blue; color: white;">Place Order</button>
+</form>
+<div id="confirmationMessage" class="hidden">
+    <h3>Your order is placed!</h3>
+    <a href="{% url 'chai:all_chai' %}">Back to Chai page</a>
+    </div>
+{% endblock content %}
