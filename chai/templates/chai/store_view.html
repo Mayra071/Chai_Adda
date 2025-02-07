@@ -1,0 +1,30 @@
+{% extends "manish.html" %}
+
+{% block content %}
+<div style="font-family: 'Arial', sans-serif; background: linear-gradient(to right, #ffefba, #ffffff); padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+    <h1 style="text-align: center; color: #333; font-size: 2.5em; margin-bottom: 20px;">Chai Stores View</h1>
+
+    <form method="POST" style="max-width: 500px; margin: 20px auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: box-shadow 0.3s;">
+        {% csrf_token %}
+        <div style="margin-bottom: 15px;">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" style="background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 1em; transition: background-color 0.3s;">
+            Submit
+        </button>
+    </form>
+
+    {% if stores %}
+    <div style="margin-top: 30px;">
+        <h2 style="text-align: center; color: #555; font-size: 1.8em; margin-bottom: 15px;">Stores with Selected Chai Variety</h2>
+        <ul style="list-style: none; padding: 0; max-width: 600px; margin: 20px auto;">
+            {% for store in stores %}
+            <li style="background: #f9f9f9; margin: 10px 0; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); transition: transform 0.2s;">
+                <strong style="color: #333;">{{ store.name }}</strong> - <span style="color: #777;">{{ store.location }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
