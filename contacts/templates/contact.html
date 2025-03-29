@@ -1,0 +1,83 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="../static/style.css">
+    {% tailwind_css %}
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <nav class="bg-blue-600 p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="{% url 'home' %}" class="text-white text-lg font-semibold">Home</a>
+        </div>
+    </nav>
+    
+    <div class="max-w-lg mx-auto mt-10 bg-white p-6 rounded-lg shadow-lg">
+        <h1 class="text-3xl font-bold text-center text-blue-600 mb-6">Contact Us</h1>
+            <form id="contactForm" action="{% url 'contacts:contact' %}" method="POST" class="space-y-4" onsubmit="event.preventDefault(); showPopup();">
+
+            {% csrf_token %}
+    
+            <div>
+                <label class="block text-gray-700 text-sm font-semibold" for="name">Name</label>
+                <input type="text" id="name" name="name" required class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400" />
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-semibold" for="email">Email</label>
+                <input type="email" id="email" name="email" required class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400" />
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-semibold" for="message">Message</label>
+                <textarea id="message" name="message" required class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"></textarea>
+            </div>
+            <button type="submit" class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">
+                Send
+            </button>
+        </form>
+    </div>
+    
+    <!-- Popup -->
+    <div id="popup" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center hidden">
+        <div class="bg-white p-6 rounded-lg shadow-md text-center">
+            <p class="text-lg font-semibold text-gray-900">Thank you! We will connect with you shortly.</p>
+            <button onclick="closePopup()" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700">
+                OK
+            </button>
+        </div>
+    </div>
+    
+    <!-- JavaScript -->
+    <script>
+        function showPopup() {
+            document.getElementById("popup").classList.remove("hidden");
+        }
+    
+        function closePopup() {
+            document.getElementById("popup").classList.add("hidden");
+            document.getElementById("contactForm").submit(); // Now submits the form properly
+        }
+    </script>
+    
+    
+    <div class="max-w-lg mx-auto mt-8 text-center">
+        <h2 class="text-xl font-semibold text-blue-600">You can also reach us at:</h2>
+        <div class="mt-4 space-y-3">
+            <a href="mailto:aryam7842@gmail.com" class="flex items-center justify-center text-blue-500 hover:underline">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" class="w-6 h-6 mr-2" alt="Email"> aryam7842@gmail.com
+            </a>
+            <a href="https://wa.me/919905820166" target="_blank" class="flex items-center justify-center text-green-500 hover:underline">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="w-6 h-6 mr-2" alt="WhatsApp"> +91 9905820166
+            </a>
+            <a href="https://www.linkedin.com/in/manish-kumar-79435324a/" target="_blank" class="flex items-center justify-center text-blue-700 hover:underline">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" class="w-6 h-6 mr-2" alt="LinkedIn"> LinkedIn: manish-kumar-79435324a
+            </a>
+            <a href="https://www.instagram.com/manisharya632/" target="_blank" class="flex items-center justify-center text-pink-500 hover:underline">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="w-6 h-6 mr-2" alt="Instagram"> Instagram: manisharya632
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,18 +1,53 @@
 {% extends "manish.html" %}
 
 {% block content %}
+
+<style>
+    /* Style dropdown text */
+    select {
+        color: black !important; /* Ensures text is dark black */
+        background-color: white; /* Keeps dropdown background light */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1em;
+        width: 100%;
+    }
+
+    /* Dropdown options */
+    select option {
+        color: black; /* Ensure dropdown options are dark black */
+        background: white; /* Keeps dropdown menu readable */
+    }
+
+    /* Focus effect on dropdown */
+    select:focus {
+        border-color: #4CAF50;
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        outline: none;
+    }
+</style>
+
 <div style="font-family: 'Arial', sans-serif; background: linear-gradient(to right, #ffefba, #ffffff); padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
     <h1 style="text-align: center; color: #333; font-size: 2.5em; margin-bottom: 20px;">Chai Stores View</h1>
 
-    <form method="POST" style="max-width: 500px; margin: 20px auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: box-shadow 0.3s;">
-        {% csrf_token %}
-        <div style="margin-bottom: 15px;">
-            {{ form.as_p }}
-        </div>
-        <button type="submit" style="background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 1em; transition: background-color 0.3s;">
-            Submit
-        </button>
-    </form>
+    <form method="POST" style="max-width: 500px; margin: 20px auto; background: #fff; padding: 20px; border-radius: 10px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: box-shadow 0.3s;">
+
+    {% csrf_token %}
+    
+    <div style="margin-bottom: 15px;">
+        {{ form.as_p }}
+    </div>
+
+    <button type="submit" style="background-color: #4CAF50; color: white; border: none; padding: 12px 20px; 
+        border-radius: 5px; cursor: pointer; font-size: 1em; transition: background-color 0.3s, transform 0.2s; 
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+
+        Submit
+    </button>
+
+</form>
 
     {% if stores %}
     <div style="margin-top: 30px;">

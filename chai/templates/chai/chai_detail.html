@@ -1,29 +1,253 @@
 {% extends "manish.html" %}
 {% block content %}
-<img src="{{ chai.image.url }}" alt="{{ chai.name }} " class="w-50 h-60 rounded-3xl shadow">
-<h1 class ="text-justify">{{ chai.name }}</h1>
-<p>{{ chai.description }}</p>
 
-<h2>Order Your Chai</h2>
-<form action="/submit_order" method="POST">
-    <label for="name">Your Name:</label>
-    <input type="text" id="name" name="name" required style="color: white; background-color: black;">
-   
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
     
-    <label for="quantity">Quantity:</label>
-    <input type="number" id="quantity" name="quantity" min="1" max="10" required style="color: white; background-color: black;">
+    .chai-container {
+        max-width: 450px;
+        margin: 20px auto;
+        background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        color: white;
+        font-family: 'Poppins', sans-serif;
+        animation: fadeIn 0.4s ease-out;
+        border: 1px solid #333;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .chai-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #444;
+    }
+
+    .chai-title {
+        font-size: 1.8em;
+        margin: 10px 0;
+        color: #ffcc00;
+    }
+
+    .chai-type {
+        display: inline-block;
+        padding: 4px 8px;
+        background: rgba(255, 204, 0, 0.2);
+        border-radius: 4px;
+        font-size: 0.8em;
+        margin-bottom: 10px;
+        color: #ffcc00;
+    }
+
+    .chai-description {
+        font-size: 0.95em;
+        line-height: 1.5;
+        color: #ccc;
+        margin-bottom: 15px;
+    }
+
+    .order-title {
+        font-size: 1.3em;
+        margin: 15px 0 10px;
+        color: #ffcc00;
+    }
+
+    .form-label {
+        display: block;
+        margin: 12px 0 5px;
+        font-size: 0.95em;
+        text-align: left;
+        color: #ddd;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 12px;
+        border: 1px solid #444;
+        border-radius: 8px;
+        font-size: 0.95em;
+        background: #2a2a2a;
+        color: white;
+    }
+
+    .form-input:focus {
+        border-color: #ffcc00;
+        outline: none;
+    }
+
+    .submit-btn {
+        width: 100%;
+        background: #ffcc00;
+        color: #222;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 5px;
+    }
+
+    .submit-btn:hover {
+        background: #ffdd44;
+    }
+
+    .confirmation {
+        display: none;
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 8px;
+        background: rgba(76, 175, 80, 0.1);
+        border: 1px solid #4CAF50;
+    }
+
+    .confirmation h3 {
+        color: #4CAF50;
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 10px;
+        color: #ffcc00;
+        font-size: 0.9em;
+    }
+
+    .spinner {
+        display: none;
+        margin: 10px auto;
+        width: 30px;
+        height: 30px;
+        border: 3px solid rgba(255, 204, 0, 0.3);
+        border-top-color: #ffcc00;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    .price-display {
+        background: rgba(255, 204, 0, 0.1);
+        padding: 12px;
+        border-radius: 8px;
+        margin: 15px 0;
+        border: 1px solid #ffcc00;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .price-label {
+        font-weight: 600;
+        color: #ffcc00;
+    }
+
+    .price-value {
+        font-weight: 700;
+    }
+</style>
+
+<div class="chai-container">
+    <img src="{{ chai.image.url }}" alt="{{ chai.name }}" class="chai-image">
+    <h1 class="chai-title">{{ chai.name }}</h1>
+    <span class="chai-type">{{ chai.get_Chai_type_display }}</span>
+    <p class="chai-description">{{ chai.description }}</p>
+
+    <div class="price-display">
+        <span class="price-label">Price per cup:</span>
+        <span class="price-value">₹{{ chai.price }}</span>
+    </div>
+
+    <h2 class="order-title">Order Your Chai</h2>
+    <form id="orderForm" action="/submit_order" method="POST">
+        {% csrf_token %}
+        
+        <input type="hidden" name="chai_id" value="{{ chai.id }}">
+        
+        <label class="form-label" for="name">Your Name:</label>
+        <input type="text" id="name" name="name" class="form-input" required>
     
-    <label for="sugar">Sugar Level:</label>
-        <select id="sugar" name="sugar" style="background-color: black; color: white;">
+        <div style="display: flex; gap: 15px; margin-bottom: 12px;">
+            <div style="flex: 1.5;">
+                <label class="form-label" for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" class="form-input" min="1" max="10" required value="1">
+            </div>
+            <div class="price-display" id="totalPriceBox" style="flex: 1; margin-top: 28px;">
+                <span class="price-label">Total:</span>
+                <span class="price-value" id="totalPrice">₹{{ chai.price }}</span>
+            </div>
+        </div>
+    
+        <label class="form-label" for="sugar">Sugar Level:</label>
+        <select id="sugar" name="sugar" class="form-input">
             <option value="normal">Normal</option>
             <option value="less">Less Sugar</option>
             <option value="no">No Sugar</option>
         </select>
     
-    <button type="submit" style="background-color: blue; color: white;">Place Order</button>
-</form>
-<div id="confirmationMessage" class="hidden">
-    <h3>Your order is placed!</h3>
-    <a href="{% url 'chai:all_chai' %}">Back to Chai page</a>
+        <button type="submit" class="submit-btn" id="submitBtn">Make Payment</button>
+        <div class="spinner" id="spinner"></div>
+    </form>
+
+    <div id="confirmationMessage" class="confirmation">
+        <h3>Order Placed Successfully!</h3>
+        <p>Your total was <span id="finalPrice"></span></p>
+        <a href="{% url 'chai:all_chai' %}" class="back-link">← Back to Menu</a>
     </div>
+</div>
+
+<script>
+    // Price calculation
+    const pricePerCup = {{ chai.price }};
+    const quantityInput = document.getElementById('quantity');
+    const totalPriceDisplay = document.getElementById('totalPrice');
+    const finalPriceDisplay = document.getElementById('finalPrice');
+    
+    function calculateTotal() {
+        const quantity = parseInt(quantityInput.value) || 1;
+        const total = quantity * pricePerCup;
+        totalPriceDisplay.textContent = `₹${total}`;
+    }
+    
+    // Calculate on page load
+    calculateTotal();
+    
+    // Recalculate when quantity changes
+    quantityInput.addEventListener('input', calculateTotal);
+    
+    // Form submission
+    document.getElementById('orderForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Show final price in confirmation
+        finalPriceDisplay.textContent = totalPriceDisplay.textContent;
+        
+        // Show loading state
+        document.getElementById('submitBtn').style.display = 'none';
+        document.getElementById('spinner').style.display = 'block';
+        
+        // Simulate processing
+        setTimeout(() => {
+            document.getElementById('spinner').style.display = 'none';
+            document.getElementById('confirmationMessage').style.display = 'block';
+            
+            // Submit form after showing confirmation
+            setTimeout(() => {
+                e.target.submit();
+            }, 2000);
+        }, 1000);
+    });
+</script>
+
 {% endblock content %}

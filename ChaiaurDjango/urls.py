@@ -23,7 +23,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
-    path('contact/',views.contact, name='contact'),
+    path('contact/', include('contacts.urls', namespace='contact')),
+
     path('chai/', include('chai.urls', namespace='chai')),
     
     path("__reload__/", include('django_browser_reload.urls')),

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'chai',
     'tailwind',
     'theme',
+    'contacts',
 ]
 
 TAILWIND_APP_NAME='theme'
