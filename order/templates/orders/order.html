@@ -1,0 +1,31 @@
+{% extends "manish.html" %}
+{% block content %}
+
+<form id="orderForm" action="{% url 'submit_order' %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="chai_id" value="{{ chai.id }}">
+    
+    <!-- Rest of your form fields remain the same -->
+</form>
+
+{% if order_success %}
+<div class="confirmation" style="display: block;">
+    <h3>Order #{{ order.id }} Placed Successfully!</h3>
+    <p>Thank you, {{ order.customer_name }}!</p>
+    <p>Your {{ order.quantity }} {{ order.chai.name }} ({{ order.get_sugar_level_display }}) will be ready soon.</p>
+    <p>Total Paid: ₹{{ order.total_price }}</p>
+    <p>Orderd at {{ order.ordered_at|date:"F j, Y, g:i A" }} </p>
+    <a href="{% url 'chai:all_chai' %}" class="back-link">← Back to Menu</a>
+</div>
+
+<script>
+    // Scroll to confirmation after successful order
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('.confirmation').scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+</script>
+{% endif %}
+
+{% endblock %}

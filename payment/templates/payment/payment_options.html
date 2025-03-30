@@ -1,0 +1,93 @@
+{% extends "manish.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Payment Options</h3>
+                </div>
+                <div class="card-body">
+                    <div class="order-summary mb-4">
+                        <h4>Order Summary</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Chai:</strong> {{ order.chai.name }}</p>
+                                <p><strong>Quantity:</strong> {{ order.quantity }}</p>
+                                <p><strong>Sugar Level:</strong> {{ order.get_sugar_level_display }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Total Amount:</strong> ₹{{ order.total_price }}</p>
+                                <p><strong>Order Date:</strong> {{ order.ordered_at|date:"F d, Y" }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form method="post" action="{% url 'payment:payment_options' order.id %}">
+                        {% csrf_token %}
+                        <div class="payment-methods">
+                            <h4 class="mb-3">Select Payment Method</h4>
+                            {% for mode, display in payment_modes %}
+                            <div class="form-check payment-option mb-3">
+                                <input class="form-check-input" type="radio" name="payment_mode" 
+                                       id="{{ mode }}" value="{{ mode }}" 
+                                       {% if forloop.first %}checked{% endif %}>
+                                <label class="form-check-label" for="{{ mode }}">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{% static 'images/'|add:mode|lower|add:'.png' %}" 
+                                             alt="{{ display }}" class="payment-icon me-2"
+                                             style="width: 40px; height: 40px;">
+                                        <span>{{ display }}</span>
+                                    </div>
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        {% if messages %}
+                        <div class="messages mt-3">
+                            {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                Proceed to Pay ₹{{ order.total_price }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.payment-option {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.payment-option:hover {
+    border-color: #007bff;
+    background-color: #f8f9fa;
+}
+
+.payment-option input[type="radio"]:checked + label {
+    font-weight: bold;
+}
+
+.payment-icon {
+    object-fit: contain;
+}
+</style>
+{% endblock %} 

@@ -1,8 +1,29 @@
 from django import forms
-from .models import Chai_varity
+from .models import ChaiVariety, ChaiReview, Store
 
-class Chai_varity_Form(forms.Form):
-    chai_var = forms.ModelChoiceField(queryset=Chai_varity.objects.all(), label="Select Chai Variety")
+class StoreSearchForm(forms.Form):
+    chai_type = forms.ChoiceField(
+        choices=[('', 'All Chai Types')] + list(ChaiVariety.CHAI_TYPE_CHOICES),
+        required=False,
+        widget=forms.Select(attrs={
+            'class': 'form-control',
+            'placeholder': 'Select a chai type'
+        })
+    )
+
+class ChaiReviewForm(forms.ModelForm):
+    class Meta:
+        model = ChaiReview
+        fields = ['rating', 'comment']
+        widgets = {
+            'rating': forms.Select(
+                choices=[(i, str(i)) for i in range(1, 6)],
+                attrs={'class': 'form-control'}
+            ),
+            'comment': forms.Textarea(
+                attrs={'class': 'form-control', 'rows': 3}
+            )
+        }
 
 #     class Meta:
 #         model = Chai_varity

@@ -7,59 +7,106 @@
     <meta name="description" content="Chai Store - A cup of comfort in every sip. Experience the magic of chai with us.">
     <title>{% block title %} Chai Store {% endblock %}</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     {% tailwind_css %}
 </head>
-<body class="bg-gradient-to-b from-gray-900 to-gray-800 text-white font-sans">
+<body class="bg-gradient-to-b from-blue-50 to-white text-gray-800 font-sans min-h-screen flex flex-col" style="font-family: 'Poppins', sans-serif;">
 
-    <header class="fixed w-full top-0 left-0 z-10 bg-gray-800 shadow-lg backdrop-blur-md">
-        <div class="flex items-center justify-between px-6 py-4 max-w-6xl mx-auto">
+    <header class="fixed w-full top-0 left-0 z-10 bg-white/90 shadow-md backdrop-blur-md">
+        <div class="flex items-center justify-between px-6 py-3 max-w-6xl mx-auto">
             <!-- Logo and Name -->
             <div class="flex items-center space-x-4">
-                <img src="{% static 'logo3.jpg' %}" alt="Chai Store Logo" class="w-16 h-16 object-cover rounded-full shadow-md border-2 border-yellow-500 transition-transform transform hover:scale-110">
-                <span class="text-2xl font-bold text-yellow-400">Chai-Adda</span>
+                <img src="{% static 'logo3.jpg' %}" alt="Chai Store Logo" class="w-14 h-14 object-cover rounded-full shadow-sm border-2 border-amber-400 transition-transform transform hover:scale-110">
+                <span class="text-2xl font-bold text-amber-600">Chai-Adda</span>
             </div>
 
             <!-- Navigation -->
-            <nav>
+            <nav class="hidden md:block">
                 <ul class="flex space-x-8 text-lg font-medium">
-                    <li><a href="{% url 'home' %}" class="text-white hover:text-yellow-400 transition duration-300">Home</a></li>
-                    <li><a href="{% url 'chai:all_chai' %}" class="text-white hover:text-yellow-400 transition duration-300">Chai</a></li>
-                    <li><a href="{% url 'contacts:contact' %}" class="text-white hover:text-yellow-400 transition duration-300">Contact</a></li>
-                    <li><a href="{% url 'chai:chai_stores' %}" class="text-white hover:text-yellow-400 transition duration-300">Stores</a></li>
-
+                    <li><a href="{% url 'home' %}" class="text-gray-700 hover:text-amber-600 transition duration-300 relative after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 after:bg-amber-400 hover:after:w-full after:transition-all after:duration-300">Home</a></li>
+                    <li><a href="{% url 'chai:all_chai' %}" class="text-gray-700 hover:text-amber-600 transition duration-300 relative after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 after:bg-amber-400 hover:after:w-full after:transition-all after:duration-300">Chai</a></li>
+                    <li><a href="{% url 'contacts:contact' %}" class="text-gray-700 hover:text-amber-600 transition duration-300 relative after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 after:bg-amber-400 hover:after:w-full after:transition-all after:duration-300">Contact</a></li>
+                    <li><a href="{% url 'chai:stores' %}" class="text-gray-700 hover:text-amber-600 transition duration-300 relative after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 after:bg-amber-400 hover:after:w-full after:transition-all after:duration-300">Stores</a></li>
                 </ul>
             </nav>
+            
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-gray-700 focus:outline-none" id="mobile-menu-button">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-white shadow-lg absolute w-full left-0 z-20" id="mobile-menu">
+            <ul class="flex flex-col py-3 px-6 space-y-3">
+                <li><a href="{% url 'home' %}" class="block py-2 text-gray-700 hover:text-amber-600 transition duration-300">Home</a></li>
+                <li><a href="{% url 'chai:all_chai' %}" class="block py-2 text-gray-700 hover:text-amber-600 transition duration-300">Chai</a></li>
+                <li><a href="{% url 'contacts:contact' %}" class="block py-2 text-gray-700 hover:text-amber-600 transition duration-300">Contact</a></li>
+                <li><a href="{% url 'chai:stores' %}" class="block py-2 text-gray-700 hover:text-amber-600 transition duration-300">Stores</a></li>
+            </ul>
         </div>
     </header>
 
-    <main class="pt-28 px-6 text-center">  <!-- Push content down to avoid overlap with fixed header -->
+    <main class="pt-24 px-4 sm:px-6 flex-grow">
         {% block content %}
         <div class="max-w-4xl mx-auto py-12">
-            <h1 class="text-5xl font-extrabold bg-gradient-to-r from-yellow-400 to-orange-500 text-transparent bg-clip-text py-4 drop-shadow-md">
+            <h1 class="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-amber-500 to-amber-700 text-transparent bg-clip-text py-4 drop-shadow-sm">
                 The Heartwarming Magic of a Chai Store
             </h1>
 
-            <h2 class="text-2xl font-semibold text-yellow-400 mt-6">A Cup of Comfort in Every Sip</h2>
-            <p class="text-lg leading-relaxed mt-3 text-gray-300">There’s something magical about a cup of chai—the way it warms your hands, soothes your soul, and sparks conversations.</p>
+            <h2 class="text-xl md:text-2xl font-semibold text-amber-600 mt-6">A Cup of Comfort in Every Sip</h2>
+            <p class="text-lg leading-relaxed mt-3 text-gray-600">There's something magical about a cup of chai—the way it warms your hands, soothes your soul, and sparks conversations.</p>
             
-            <h2 class="text-xl font-semibold text-yellow-400 mt-10">A Tradition Passed Through Generations</h2>
-            <p class="text-lg leading-relaxed mt-3 text-gray-300">For centuries, chai has been more than just a drink; it’s an emotion. Our chai store serves freshly brewed tea infused with rich spices like cardamom, ginger, and cinnamon.</p>
+            <h2 class="text-xl font-semibold text-amber-600 mt-10">A Tradition Passed Through Generations</h2>
+            <p class="text-lg leading-relaxed mt-3 text-gray-600">For centuries, chai has been more than just a drink; it's an emotion. Our chai store serves freshly brewed tea infused with rich spices like cardamom, ginger, and cinnamon.</p>
 
-            <h2 class="text-xl font-semibold text-yellow-400 mt-10">A Variety of Flavors to Savor</h2>
-            <p class="text-lg leading-relaxed mt-3 text-gray-300">Whether you love Masala Chai, Ginger Tea, or the creamy Irani Chai, we have something special for every tea lover!</p>
+            <h2 class="text-xl font-semibold text-amber-600 mt-10">A Variety of Flavors to Savor</h2>
+            <p class="text-lg leading-relaxed mt-3 text-gray-600">Whether you love Masala Chai, Ginger Tea, or the creamy Irani Chai, we have something special for every tea lover!</p>
 
-            <h2 class="text-xl font-semibold text-yellow-400 mt-10">Visit Us for a Sip of Happiness!</h2>
-            <p class="text-lg leading-relaxed mt-3 text-gray-300">At our chai store, we don’t just serve tea—we serve happiness in a cup. Stop by and experience the magic of chai! ☕✨</p>
+            <h2 class="text-xl font-semibold text-amber-600 mt-10">Visit Us for a Sip of Happiness!</h2>
+            <p class="text-lg leading-relaxed mt-3 text-gray-600">At our chai store, we don't just serve tea—we serve happiness in a cup. Stop by and experience the magic of chai! ☕✨</p>
         </div>
         {% endblock %}
     </main>
 
     {% block footer %}
-    <footer class="bg-gray-800 text-white text-center p-6 mt-12 shadow-inner border-t border-yellow-500">
-        <p class="text-sm">&copy; 2025 Chai Store. All rights reserved.</p>
-        <p><a href="{% url 'contacts:contact' %}" class="text-yellow-400 hover:underline">Contact Us</a></p>
+    <footer class="bg-amber-50 text-gray-700 text-center p-6 mt-6 shadow-inner border-t border-amber-100">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="text-left">
+                    <h3 class="text-lg font-semibold text-amber-700 mb-3">About Us</h3>
+                    <p class="text-sm text-gray-600">We serve the finest chai with love and care, bringing traditional recipes with a modern twist.</p>
+                </div>
+                <div class="text-left">
+                    <h3 class="text-lg font-semibold text-amber-700 mb-3">Quick Links</h3>
+                    <ul class="space-y-1 text-sm">
+                        <li><a href="{% url 'home' %}" class="text-gray-600 hover:text-amber-600">Home</a></li>
+                        <li><a href="{% url 'chai:all_chai' %}" class="text-gray-600 hover:text-amber-600">Chai Menu</a></li>
+                        <li><a href="{% url 'chai:stores' %}" class="text-gray-600 hover:text-amber-600">Store Locations</a></li>
+                    </ul>
+                </div>
+                <div class="text-left">
+                    <h3 class="text-lg font-semibold text-amber-700 mb-3">Contact Us</h3>
+                    <p class="text-sm text-gray-600">Email: info@chaiadda.com</p>
+                    <p class="text-sm text-gray-600">Phone: +91 98765 43210</p>
+                    <a href="{% url 'contacts:contact' %}" class="text-amber-600 hover:underline text-sm">Send us a message</a>
+                </div>
+            </div>
+            <div class="pt-4 border-t border-amber-200">
+                <p class="text-sm">&copy; 2025 Chai-Adda. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
     {% endblock %}
 
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
 </body>
 </html>

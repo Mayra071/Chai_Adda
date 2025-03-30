@@ -7,11 +7,6 @@
     <h1 class="text-4xl font-bold text-center mb-8 text-green-800">Chai Variety</h1>
     
     <!-- Button Group for Sorting/Filtering -->
-    <div class="text-center mb-6">
-        <button class="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 transition duration-300 mx-2" onclick="sortChais('all')">All</button>
-        <button class="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 transition duration-300 mx-2" onclick="sortChais('popular')">Popular</button>
-        <button class="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 transition duration-300 mx-2" onclick="sortChais('new')">New Arrivals</button>
-    </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {% for chai in chais %}

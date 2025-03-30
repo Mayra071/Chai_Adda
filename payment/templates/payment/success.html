@@ -1,0 +1,95 @@
+{% extends "manish.html" %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto py-10 px-4">
+    <div class="bg-white rounded-xl shadow-sm border border-amber-100 overflow-hidden">
+        <!-- Success Header -->
+        <div class="bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-8 text-white text-center">
+            <div class="mb-6 inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h2 class="text-3xl font-bold">Payment Successful!</h2>
+            <p class="text-amber-100 mt-2">Thank you for your order. Your payment has been processed successfully.</p>
+        </div>
+        
+        <!-- Order Details -->
+        <div class="p-8 text-center">
+            <p class="text-gray-600 mb-8">Your chai will be ready in approximately 10-15 minutes.</p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'chai:all_chai' %}" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all duration-200 transform hover:-translate-y-1">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                    Order More Chai
+                </a>
+                <a href="{% url 'chai:stores' %}" class="inline-flex items-center justify-center px-6 py-3 border border-amber-300 text-base font-medium rounded-md text-amber-700 bg-amber-50 hover:bg-amber-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all duration-200 transform hover:-translate-y-1">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    Find Stores
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confetti Animation -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Create confetti animation
+    const colors = ['#F59E0B', '#FBBF24', '#FCD34D', '#78350F', '#92400E', '#ffffff'];
+    
+    function createConfetti() {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        
+        // Random position and color
+        const size = Math.floor(Math.random() * 10) + 5;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        confetti.style.width = `${size}px`;
+        confetti.style.height = `${size}px`;
+        confetti.style.backgroundColor = color;
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.opacity = Math.random();
+        
+        // Add to body
+        document.body.appendChild(confetti);
+        
+        // Remove after animation
+        setTimeout(() => {
+            confetti.remove();
+        }, 3000);
+    }
+    
+    // Create multiple confetti
+    for (let i = 0; i < 150; i++) {
+        setTimeout(createConfetti, Math.random() * 2000);
+    }
+});
+</script>
+
+<style>
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+    }
+}
+
+.confetti {
+    position: fixed;
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 999;
+    animation: confettiFall 3s linear forwards;
+}
+</style>
+{% endblock %} 

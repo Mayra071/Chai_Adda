@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'contacts',
+    'order',
+    'payment',
 ]
 
 TAILWIND_APP_NAME='theme'
