@@ -7,6 +7,7 @@
     <meta name="description" content="Chai Store - A cup of comfort in every sip. Experience the magic of chai with us.">
     <title>{% block title %} Chai Store {% endblock %}</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     {% tailwind_css %}
 </head>
@@ -21,32 +22,14 @@
             </div>
 
             <!-- Navigation -->
-            <nav class="hidden md:block">
-                <ul class="flex space-x-8 text-lg font-medium">
-                    <li><a href="{% url 'home' %}" class="text-gray-700 hover:text-amber-600 transition duration-300 relative after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 after:bg-amber-400 hover:after:w-full after:transition-all after:duration-300">Home</a></li>
-                    <li><a href="{% url 'chai:all_chai' %}" class="text-gray-700 hover:text-amber-600 transition duration-300 relative after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 after:bg-amber-400 hover:after:w-full after:transition-all after:duration-300">Chai</a></li>
-                    <li><a href="{% url 'contacts:contact' %}" class="text-gray-700 hover:text-amber-600 transition duration-300 relative after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 after:bg-amber-400 hover:after:w-full after:transition-all after:duration-300">Contact</a></li>
-                    <li><a href="{% url 'chai:stores' %}" class="text-gray-700 hover:text-amber-600 transition duration-300 relative after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 after:bg-amber-400 hover:after:w-full after:transition-all after:duration-300">Stores</a></li>
-                </ul>
+            <nav class="md:flex items-center space-x-8 text-lg font-medium" aria-label="Primary Navigation">
+                <a href="{% url 'home' %}" class="text-gray-700 hover:text-amber-600 transition duration-300 relative after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 after:bg-amber-400 hover:after:w-full after:transition-all after:duration-300">Home</a>
+                <a href="{% url 'chai:all_chai' %}" class="text-gray-700 hover:text-amber-600 transition duration-300 relative after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 after:bg-amber-400 hover:after:w-full after:transition-all after:duration-300">Chai</a>
+                <a href="{% url 'contacts:contact' %}" class="text-gray-700 hover:text-amber-600 transition duration-300 relative after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 after:bg-amber-400 hover:after:w-full after:transition-all after:duration-300">Contact</a>
+                <a href="{% url 'chai:stores' %}" class="text-gray-700 hover:text-amber-600 transition duration-300 relative after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 after:bg-amber-400 hover:after:w-full after:transition-all after:duration-300">Stores</a>
             </nav>
-            
-            <!-- Mobile Menu Button -->
-            <button class="md:hidden text-gray-700 focus:outline-none" id="mobile-menu-button">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
         </div>
         
-        <!-- Mobile Menu -->
-        <div class="md:hidden hidden bg-white shadow-lg absolute w-full left-0 z-20" id="mobile-menu">
-            <ul class="flex flex-col py-3 px-6 space-y-3">
-                <li><a href="{% url 'home' %}" class="block py-2 text-gray-700 hover:text-amber-600 transition duration-300">Home</a></li>
-                <li><a href="{% url 'chai:all_chai' %}" class="block py-2 text-gray-700 hover:text-amber-600 transition duration-300">Chai</a></li>
-                <li><a href="{% url 'contacts:contact' %}" class="block py-2 text-gray-700 hover:text-amber-600 transition duration-300">Contact</a></li>
-                <li><a href="{% url 'chai:stores' %}" class="block py-2 text-gray-700 hover:text-amber-600 transition duration-300">Stores</a></li>
-            </ul>
-        </div>
     </header>
 
     <main class="pt-24 px-4 sm:px-6 flex-grow">
@@ -67,6 +50,10 @@
 
             <h2 class="text-xl font-semibold text-amber-600 mt-10">Visit Us for a Sip of Happiness!</h2>
             <p class="text-lg leading-relaxed mt-3 text-gray-600">At our chai store, we don't just serve tea—we serve happiness in a cup. Stop by and experience the magic of chai! ☕✨</p>
+
+            <div class="mt-10">
+                <a href="{% url 'chai:all_chai' %}" class="inline-block bg-amber-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-amber-700 transition duration-300 font-semibold">Explore Our Chai Menu</a>
+            </div>
         </div>
         {% endblock %}
     </main>
@@ -101,12 +88,5 @@
     </footer>
     {% endblock %}
 
-    <script>
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
-        });
-    </script>
 </body>
 </html>

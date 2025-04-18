@@ -27,5 +27,6 @@ urlpatterns = [
     path('chai/', include('chai.urls', namespace='chai')),
     path('order/', include('order.urls')),
     path('payment/', include('payment.urls', namespace='payment')),
+    # path('accounts/', include('django.contrib.auth.urls')),
     path("__reload__/", include('django_browser_reload.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

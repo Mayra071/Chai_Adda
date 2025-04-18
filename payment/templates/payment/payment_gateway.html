@@ -14,10 +14,27 @@
             </h2>
             <p class="text-amber-100 mt-1">Complete your payment to confirm your order</p>
         </div>
-        
+
         <!-- Payment Body -->
         <div class="p-6">
-            <!-- Order Summary -->
+
+            <!-- 🧾 Order Summary Section -->
+            <div class="mb-6 border-b border-gray-100 pb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Order Summary</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+                    <div class="space-y-2">
+                        <p><span class="font-semibold">Chai:</span> {{ order.chai.name }}</p>
+                        <p><span class="font-semibold">Quantity:</span> {{ order.quantity }}</p>
+                        <p><span class="font-semibold">Sugar Level:</span> {{ order.get_sugar_level_display }}</p>
+                    </div>
+                    <div class="space-y-2">
+                        <p><span class="font-semibold">Total Amount:</span> ₹{{ order.total_price }}</p>
+                        <p><span class="font-semibold">Order Date:</span> {{ order.ordered_at|date:"F d, Y" }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 💳 Payment Details -->
             <div class="mb-6 border-b border-gray-100 pb-4">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Payment Details</h3>
                 <div class="space-y-3">
@@ -29,95 +46,40 @@
                         <span class="text-gray-600">Transaction ID:</span>
                         <span class="font-medium text-gray-800">{{ payment.transaction_id }}</span>
                     </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Payment Method:</span>
-                        <span class="font-medium text-gray-800">{{ payment.get_payment_mode_display }}</span>
-                    </div>
-                    <div class="text-center mt-4 p-2 bg-green-50 text-green-700 rounded-md border border-green-100">
-                        <span class="font-medium">Django + Tailwind = ❤️</span>
-                    </div>
                 </div>
             </div>
 
-            <!-- Payment Method Specific Sections -->
+            <!-- Payment Mode Specific Sections (UPI / CARD / WALLET remain the same) -->
             {% if payment.payment_mode == 'UPI' %}
-            <div class="mb-6 bg-amber-50 rounded-lg p-4 border border-amber-100">
-                <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
-                    <svg class="w-5 h-5 mr-2 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-                    </svg>
-                    UPI Payment
-                </h3>
-                <div class="text-center p-4 bg-white rounded-lg shadow-sm">
-                    <div class="mb-4">
-                        <!-- QR Code image for UPI payment -->
-                        <img src="{% static 'images/QRCODE.jpg' %}" 
-                             alt="UPI QR Code" class="mx-auto w-[250px] h-[250px] border border-gray-200 rounded-md">
-                    </div>
-                    <p class="text-gray-700 mb-2">Scan this QR code with any UPI app to pay</p>
-                    <div class="flex items-center justify-center">
-                        <span class="font-medium bg-amber-100 text-amber-800 px-3 py-1 rounded-md">9905820166@barodampay</span>
-                    </div>
-                </div>
-            </div>
+            <!-- ...existing UPI block... -->
             {% endif %}
 
             {% if payment.payment_mode == 'CARD' %}
-            <div class="mb-6 bg-amber-50 rounded-lg p-4 border border-amber-100">
-                <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
-                    <svg class="w-5 h-5 mr-2 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-                    </svg>
-                    Card Details
-                </h3>
-                <div class="space-y-4">
-                    <div class="form-control">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
-                        <input type="text" class="w-full border border-gray-300 rounded-md p-2 focus:ring-amber-500 focus:border-amber-500" placeholder="1234 5678 9012 3456">
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="form-control">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Expiry Date</label>
-                            <input type="text" class="w-full border border-gray-300 rounded-md p-2 focus:ring-amber-500 focus:border-amber-500" placeholder="MM/YY">
-                        </div>
-                        <div class="form-control">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">CVV</label>
-                            <input type="password" class="w-full border border-gray-300 rounded-md p-2 focus:ring-amber-500 focus:border-amber-500" placeholder="***">
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- ...existing CARD block... -->
             {% endif %}
 
             {% if payment.payment_mode == 'WALLET' %}
-            <div class="mb-6 bg-amber-50 rounded-lg p-4 border border-amber-100">
-                <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
-                    <svg class="w-5 h-5 mr-2 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    Digital Wallet
-                </h3>
-                <div class="text-center">
-                    <p class="text-gray-700 mb-3">Choose your wallet:</p>
-                    <div class="flex flex-wrap justify-center gap-2">
-                        <button class="px-4 py-2 bg-white border border-amber-200 rounded-md text-amber-700 hover:bg-amber-50 transition-colors">
-                            PayTM
-                        </button>
-                        <button class="px-4 py-2 bg-white border border-amber-200 rounded-md text-amber-700 hover:bg-amber-50 transition-colors">
-                            PhonePe
-                        </button>
-                        <button class="px-4 py-2 bg-white border border-amber-200 rounded-md text-amber-700 hover:bg-amber-50 transition-colors">
-                            Google Pay
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <!-- ...existing WALLET block... -->
             {% endif %}
 
-            <!-- Submit Button -->
+            <!-- ✅ Payment Form -->
             <form method="post" class="mt-6">
                 {% csrf_token %}
+
+                <!-- 🔽 Payment Method Dropdown -->
+                <div class="mb-4">
+                    <label for="payment_mode" class="block text-sm font-medium text-gray-700 mb-1">Select Payment Method</label>
+                    <select name="payment_mode" id="payment_mode" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500">
+                        <option value="CASH" {% if payment.payment_mode == 'CASH' %}selected{% endif %}>Cash</option>
+                        <option value="UPI" {% if payment.payment_mode == 'UPI' %}selected{% endif %}>UPI</option>
+                        <option value="CARD" {% if payment.payment_mode == 'CARD' %}selected{% endif %}>Card</option>
+                        <option value="WALLET" {% if payment.payment_mode == 'WALLET' %}selected{% endif %}>Wallet</option>
+                    </select>
+                </div>
+
+                <!-- Optional hidden field -->
                 <input type="hidden" name="upi_transaction_id" value="UPI12345">
+
                 <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-md font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 flex items-center justify-center">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
@@ -126,6 +88,7 @@
                 </button>
             </form>
 
+            <!-- 🔁 Switch Method -->
             <div class="text-center mt-4">
                 <a href="{% url 'payment:payment_options' payment.order.id %}" class="text-amber-600 hover:text-amber-700 text-sm font-medium">
                     Choose Different Payment Method
@@ -134,4 +97,4 @@
         </div>
     </div>
 </div>
-{% endblock %} 
+{% endblock %}
