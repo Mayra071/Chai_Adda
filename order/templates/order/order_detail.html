@@ -1,0 +1,16 @@
+{% extends "manish.html" %}
+{% block content %}
+  <h2>Order Details</h2>
+  <p><strong>Order ID:</strong> {{ order.id }}</p>
+  <p><strong>Chai:</strong> {{ order.chai.name }}</p>
+  <p><strong>Quantity:</strong> {{ order.quantity }}</p>
+  <p><strong>Sugar Level:</strong> {{ order.get_sugar_level_display }}</p>
+  <p><strong>Total Price:</strong> ₹{{ order.total_price }}</p>
+  <p><strong>Status:</strong> {{ order.payment_status }}</p>
+  {% if payment %}
+    <h3>Payment Details</h3>
+    <p><strong>Payment Mode:</strong> {{ payment.payment_mode }}</p>
+    <p><strong>Payment Status:</strong> {{ payment.payment_status }}</p>
+    <p><strong>Transaction ID:</strong> {{ payment.transaction_id }}</p>
+  {% endif %}
+{% endblock %} 

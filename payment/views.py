@@ -14,7 +14,6 @@ from django.db import transaction
 # Set up logging
 logger = logging.getLogger(__name__)
 
-@login_required
 def create_payment(request):
     logger.info(f"Payment creation request from user: {request.user}")
     if request.method == 'POST':
@@ -24,8 +23,9 @@ def create_payment(request):
             upi_id = request.POST.get('upi_id') if payment_mode == 'UPI' else None
             
             logger.info(f"Creating payment with amount: {amount}, mode: {payment_mode}, UPI ID: {upi_id}")
+            user = request.user if request.user.is_authenticated else None
             payment = Payment.objects.create(
-                user=request.user,
+                user=user,
                 amount=amount,
                 payment_mode=payment_mode,
                 upi_id=upi_id,
@@ -46,7 +46,6 @@ def create_payment(request):
 
     return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
-@login_required
 def verify_payment(request, payment_id):
     payment = get_object_or_404(Payment, id=payment_id)
     
@@ -119,7 +118,6 @@ def verify_upi(request, payment_id):
         'upi_id': payment.upi_id
     })
 
-@login_required
 def payment_options(request, order_id):
     """Single entry point for payment flow"""
     order = get_object_or_404(Order.objects.select_related('payment'), id=order_id)
@@ -130,44 +128,43 @@ def payment_options(request, order_id):
     
     if request.method == 'POST':
         payment_mode = request.POST.get('payment_mode')
+        print("Selected payment mode:", payment_mode)  # Debug log
         if not payment_mode:
             messages.error(request, 'Please select a payment method.')
             return redirect('payment:payment_options', order_id=order.id)
-        
+        if payment_mode not in ['CASH', 'UPI']:
+            messages.error(request, 'Invalid payment method selected.')
+            return redirect('payment:payment_options', order_id=order.id)
         try:
-            with transaction.atomic():
-                payment.payment_mode = payment_mode
-                payment.transaction_id = f"CHAI-{uuid.uuid4().hex[:8].upper()}"
-                
-                if payment_mode == 'CASH':
-                    # Immediately process cash payments
-                    payment.payment_status = 'PENDING_DELIVERY'
-                    payment.save()
-                    order.payment_status = 'unpaid'
-                    order.save()
-                    messages.success(request, 'Order placed successfully! Please pay cash on delivery.')
-                    return redirect('order:order_detail', order_id=order.id)
-                else:
-                    # For UPI, CARD, or WALLET payments - redirect to gateway
-                    payment.save()
-                    return redirect('payment:payment_gateway', payment_id=payment.id)
-                    
+            # Always generate a new unique transaction ID
+            import uuid
+            payment.payment_mode = payment_mode
+            payment.transaction_id = f"CHAI-{uuid.uuid4().hex[:8].upper()}"
+            if payment_mode == 'CASH':
+                payment.payment_status = 'PENDING_DELIVERY'
+                payment.save()
+                order.payment_status = 'unpaid'
+                order.save()
+                messages.success(request, 'Order placed successfully! Please pay cash on delivery.')
+                return redirect('payment:payment_success')
+            elif payment_mode == 'UPI':
+                payment.save()
+                return redirect('payment:payment_gateway', payment_id=payment.id)
         except Exception as e:
-            logger.error(f"Error processing payment for order {order_id}: {str(e)}")
+            print(f"Error processing payment for order {order_id}: {str(e)}")  # Debug log
             messages.error(request, 'Error processing payment. Please try again.')
             return redirect('payment:payment_options', order_id=order.id)
     
     context = {
         'order': order,
         'payment': payment,
-        'payment_modes': Payment.PAYMENT_MODES,
+        'payment_modes': [('CASH', 'Cash'), ('UPI', 'UPI')],
     }
     return render(request, 'payment/payment_options.html', context)
 
-@login_required
 @require_http_methods(['POST'])
 def process_payment(request, order_id):
-    order = get_object_or_404(Order, id=order_id, user=request.user)
+    order = get_object_or_404(Order, id=order_id)
     payment_mode = request.POST.get('payment_mode')
     
     if not payment_mode:
@@ -175,8 +172,9 @@ def process_payment(request, order_id):
         return redirect('payment:payment_options', order_id=order.id)
     
     # Create payment record
+    user = request.user if request.user.is_authenticated else None
     payment = Payment.objects.create(
-        user=request.user,
+        user=user,
         amount=order.total_price,
         payment_mode=payment_mode,
         transaction_id=f"CHAI-{uuid.uuid4().hex[:8].upper()}",
@@ -189,51 +187,41 @@ def process_payment(request, order_id):
     # Simulate payment processing based on payment mode
     if payment_mode == 'CASH':
         # For cash payments, mark as pending delivery
-        payment.payment_status = 'PENDING_DELIVERY'
+        payment.payment_status = 'cash on delevry'
         payment.save()
         messages.success(request, 'Order placed successfully! Please pay cash on delivery.')
         return redirect('order:order_detail', order_id=order.id)
     
-    elif payment_mode in ['UPI', 'CARD', 'WALLET']:
-        # Redirect to payment gateway (simulated)
+    else:        # Redirect to payment gateway (simulated)
         return redirect('payment:payment_gateway', payment_id=payment.id)
-    
     messages.error(request, 'Invalid payment method selected.')
     return redirect('payment:payment_options', order_id=order.id)
 
-@login_required
 def payment_gateway(request, payment_id):
-    """Handle all non-cash payments"""
     payment = get_object_or_404(Payment.objects.select_related('order'), id=payment_id)
     order = payment.order
-    
+
     if request.method == 'POST':
+        payment_mode = request.POST.get('payment_mode')
+        if payment_mode:
+            payment.payment_mode = payment_mode
         try:
             with transaction.atomic():
-                if payment.payment_mode == 'UPI':
-                    # Handle UPI-specific logic
-                    upi_transaction_id = request.POST.get('upi_transaction_id')
-                    if not upi_transaction_id:
-                        raise ValueError('UPI Transaction ID is required')
-                    payment.transaction_id = upi_transaction_id
-                
-                # Complete the payment
-                payment.payment_status = 'COMPLETED'
-                payment.is_paid = True
-                payment.save()
-                
-                order.payment_status = 'paid'
-                order.save()
-                
-                messages.success(request, 'Payment successful! Your order has been confirmed.')
-                # Redirect to payment success page instead of order detail
-                return redirect('payment:payment_success')
-                
+                if payment.payment_mode == 'CASH':
+                    payment.payment_status = 'PENDING_DELIVERY'
+                    payment.is_paid = False
+                    payment.save()
+                    order.payment_status = 'unpaid'
+                    order.save()
+                    messages.success(request, 'Order placed successfully! Please pay cash on delivery.')
+                    return redirect('payment:payment_success')
+                elif payment.payment_mode == 'UPI':
+                    # Instead of processing, redirect to payment options page
+                    return redirect('payment:payment_options', order_id=order.id)
         except Exception as e:
             logger.error(f"Error processing payment at gateway {payment_id}: {str(e)}")
             messages.error(request, 'Payment processing failed. Please try again.')
             return redirect('payment:payment_options', order_id=order.id)
-    
     context = {
         'payment': payment,
         'order': order,

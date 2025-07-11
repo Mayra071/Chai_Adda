@@ -50,43 +50,42 @@
             </div>
 
             <!-- Payment Mode Specific Sections (UPI / CARD / WALLET remain the same) -->
-            {% if payment.payment_mode == 'UPI' %}
-            <!-- ...existing UPI block... -->
-            {% endif %}
-
-            {% if payment.payment_mode == 'CARD' %}
-            <!-- ...existing CARD block... -->
-            {% endif %}
-
-            {% if payment.payment_mode == 'WALLET' %}
-            <!-- ...existing WALLET block... -->
-            {% endif %}
-
-            <!-- ✅ Payment Form -->
             <form method="post" class="mt-6">
                 {% csrf_token %}
-
-                <!-- 🔽 Payment Method Dropdown -->
                 <div class="mb-4">
                     <label for="payment_mode" class="block text-sm font-medium text-gray-700 mb-1">Select Payment Method</label>
-                    <select name="payment_mode" id="payment_mode" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500">
+                    <select name="payment_mode" id="payment_mode" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" onchange="toggleUPIField()">
                         <option value="CASH" {% if payment.payment_mode == 'CASH' %}selected{% endif %}>Cash</option>
                         <option value="UPI" {% if payment.payment_mode == 'UPI' %}selected{% endif %}>UPI</option>
-                        <option value="CARD" {% if payment.payment_mode == 'CARD' %}selected{% endif %}>Card</option>
-                        <option value="WALLET" {% if payment.payment_mode == 'WALLET' %}selected{% endif %}>Wallet</option>
                     </select>
                 </div>
-
-                <!-- Optional hidden field -->
-                <input type="hidden" name="upi_transaction_id" value="UPI12345">
-
+                <div class="mb-4" id="upiField" style="display: {% if payment.payment_mode == 'UPI' %}block{% else %}none{% endif %};">
+                    <label for="upi_transaction_id" class="block text-sm font-medium text-gray-700 mb-1">Enter UPI Transaction ID</label>
+                    <input type="text" name="upi_transaction_id" id="upi_transaction_id" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-amber-500 focus:border-amber-500" {% if payment.payment_mode == 'UPI' %}required{% endif %}>
+                </div>
                 <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-md font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 flex items-center justify-center">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
-                    Complete Payment
+                    Pay
                 </button>
             </form>
+            <script>
+            function toggleUPIField() {
+                var paymentMode = document.getElementById('payment_mode').value;
+                var upiField = document.getElementById('upiField');
+                if (paymentMode === 'UPI') {
+                    upiField.style.display = 'block';
+                    document.getElementById('upi_transaction_id').required = true;
+                } else {
+                    upiField.style.display = 'none';
+                    document.getElementById('upi_transaction_id').required = false;
+                }
+            }
+            document.addEventListener('DOMContentLoaded', function() {
+                toggleUPIField();
+            });
+            </script>
 
             <!-- 🔁 Switch Method -->
             <div class="text-center mt-4">

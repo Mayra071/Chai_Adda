@@ -8,7 +8,6 @@ from .models import Order
 from chai.models import ChaiVariety
 from payment.models import Payment
 
-@login_required
 def create_order(request, chai_id):
     chai = get_object_or_404(ChaiVariety, id=chai_id)
     if request.method == 'POST':
@@ -17,9 +16,13 @@ def create_order(request, chai_id):
             sugar_level = request.POST.get('sugar_level', 'normal')
             total_price = chai.price * quantity
 
+            user = request.user if request.user.is_authenticated else None
+            customer_name = request.user.get_full_name() if request.user.is_authenticated else 'Guest'
+
             order = Order.objects.create(
                 chai=chai,
-                customer_name=request.user.get_full_name() if request.user.is_authenticated else 'Guest',
+                user=user,
+                customer_name=customer_name,
                 quantity=quantity,
                 sugar_level=sugar_level,
                 total_price=total_price
@@ -27,7 +30,7 @@ def create_order(request, chai_id):
             
             # Create payment for the order
             payment = Payment.objects.create(
-                user=request.user,
+                user=user,
                 chai=chai,
                 amount=total_price,
                 payment_status='PENDING'
@@ -44,7 +47,6 @@ def create_order(request, chai_id):
     
     return render(request, 'order/create_order.html', {'chai': chai})
 
-@login_required
 def submit_order(request):
     if request.method == 'POST':
         try:
@@ -55,10 +57,13 @@ def submit_order(request):
             chai = get_object_or_404(ChaiVariety, id=chai_id)
             total_price = chai.price * quantity
 
+            user = request.user if request.user.is_authenticated else None
+            customer_name = request.user.get_full_name() if request.user.is_authenticated else 'Guest'
+
             order = Order.objects.create(
-                user=request.user,
+                user=user,
                 chai=chai,
-                customer_name=request.user.get_full_name(),
+                customer_name=customer_name,
                 quantity=quantity,
                 sugar_level=sugar_level,
                 total_price=total_price
@@ -73,12 +78,10 @@ def submit_order(request):
     
     return redirect('chai:all_chai')
 
-@login_required
 def order_confirmation(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     return render(request, 'order/confirmation.html', {'order': order})
 
-@login_required
 def order_history(request):
     search_query = request.GET.get('search', '')
     orders = Order.objects.filter(
@@ -96,7 +99,6 @@ def order_history(request):
         'search_query': search_query
     })
 
-@login_required
 def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     return render(request, 'order/order_detail.html', {

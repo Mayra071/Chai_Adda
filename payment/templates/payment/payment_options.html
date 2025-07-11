@@ -7,7 +7,7 @@
         <div class="col-md-8">
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0">Payment Options</h3>
+                    <h3 class="mb-0">UPI Payment</h3>
                 </div>
                 <div class="card-body">
                     <div class="order-summary mb-4">
@@ -27,25 +27,14 @@
 
                     <form method="post" action="{% url 'payment:payment_options' order.id %}">
                         {% csrf_token %}
-                        <div class="payment-methods">
-                            <h4 class="mb-3">Select Payment Method</h4>
-                            {% for mode, display in payment_modes %}
-                            <div class="form-check payment-option mb-3">
-                                <input class="form-check-input" type="radio" name="payment_mode" 
-                                       id="{{ mode }}" value="{{ mode }}" 
-                                       {% if forloop.first %}checked{% endif %}>
-                                <label class="form-check-label" for="{{ mode }}">
-                                    <div class="d-flex align-items-center">
-                                        <img src="{% static 'images/'|add:mode|lower|add:'.png' %}" 
-                                             alt="{{ display }}" class="payment-icon me-2"
-                                             style="width: 40px; height: 40px;">
-                                        <span>{{ display }}</span>
-                                    </div>
-                                </label>
-                            </div>
-                            {% endfor %}
+                        <div class="mb-4">
+                            <label for="upi_id" class="form-label">Enter your UPI ID</label>
+                            <input type="text" class="form-control" id="upi_id" name="upi_id" placeholder="example@upi" required>
                         </div>
-
+                        <div class="mb-4">
+                            <label for="upi_transaction_id" class="form-label">Enter UPI Transaction ID</label>
+                            <input type="text" class="form-control" id="upi_transaction_id" name="upi_transaction_id" placeholder="Transaction ID" required>
+                        </div>
                         {% if messages %}
                         <div class="messages mt-3">
                             {% for message in messages %}
@@ -55,10 +44,9 @@
                             {% endfor %}
                         </div>
                         {% endif %}
-
                         <div class="mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg w-100">
-                                Proceed to Pay ₹{{ order.total_price }}
+                            <button type="submit" class="btn btn-success btn-lg w-100">
+                                Pay with UPI
                             </button>
                         </div>
                     </form>
@@ -67,27 +55,4 @@
         </div>
     </div>
 </div>
-
-<style>
-.payment-option {
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
-    transition: all 0.3s ease;
-}
-
-.payment-option:hover {
-    border-color: #007bff;
-    background-color: #f8f9fa;
-}
-
-.payment-option input[type="radio"]:checked + label {
-    font-weight: bold;
-}
-
-.payment-icon {
-    object-fit: contain;
-}
-</style>
 {% endblock %} 
