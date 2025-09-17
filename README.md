@@ -1,14 +1,26 @@
-ChaiaurDjango ☕
+<H1 align="center">ChaiaurDjango ☕</H1>
 
-![Hero](static/images/kulhadchai.jpg.jpg)
+<p align="center">
+  <img src="static/images/kulhadchai.jpg" alt="Kulhad Chai" width="400" height="200">
+</p>
 
-<!-- <img src="static/images/kulhadchai.jpg.jpg" alt="Kulhad Chai" width="300" height="200"> -->
-
-[![Made with Django](https://img.shields.io/badge/Made%20with-Django%205-092E20?logo=django&logoColor=white)](https://www.djangoproject.com/)
-[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.x-38B2AC?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![SQLite](https://img.shields.io/badge/DB-SQLite-003B57?logo=sqlite&logoColor=white)](https://www.sqlite.org/)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
+<p align="center">
+  <a href="https://www.djangoproject.com/">
+    <img src="https://img.shields.io/badge/Made%20with-Django%205-092E20?logo=django&logoColor=white" alt="Made with Django">
+  </a>
+  <a href="https://www.python.org/">
+    <img src="https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white" alt="Python">
+  </a>
+  <a href="https://tailwindcss.com/">
+    <img src="https://img.shields.io/badge/Tailwind-3.x-38B2AC?logo=tailwindcss&logoColor=white" alt="Tailwind CSS">
+  </a>
+  <a href="https://www.sqlite.org/">
+    <img src="https://img.shields.io/badge/DB-SQLite-003B57?logo=sqlite&logoColor=white" alt="SQLite">
+  </a>
+  <a href="https://makeapullrequest.com">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome">
+  </a>
+</p>
 
 Modern Django app to browse chai varieties, place orders, and simulate payments, styled with Tailwind CSS.
 
