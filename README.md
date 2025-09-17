@@ -1,6 +1,6 @@
 ChaiaurDjango ☕
 
-![Hero](static/logo3.jpg)
+![Hero](C:\Chai_Django\Images\kulhadchai.jpg)
 
 [![Made with Django](https://img.shields.io/badge/Made%20with-Django%205-092E20?logo=django&logoColor=white)](https://www.djangoproject.com/)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
