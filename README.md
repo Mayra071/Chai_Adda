@@ -114,4 +114,6 @@ You can replace or extend images used above:
 - If images don’t render, check `MEDIA_URL`/`MEDIA_ROOT` and run the server with debug on.
 
 ### License
-This project is for learning/demo purposes. Add a LICENSE file if you plan to distribute.
+This project is for learning/demo purposes.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE.md)
+
