@@ -1,6 +1,6 @@
-ChaiaurDjango ☕
+<h1 align="center">☕ ChaiaurDjango</h2>
 
-![Hero](static/images/kulhadchai.jpg.jpg)
+<img src="static/images/kulhadchai.jpg" alt="Hero" width="100%" style="max-width:1200px;" />
 
 <!-- <img src="static/images/kulhadchai.jpg.jpg" alt="Kulhad Chai" width="300" height="200"> -->
 
@@ -11,12 +11,6 @@ ChaiaurDjango ☕
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 
 Modern Django app to browse chai varieties, place orders, and simulate payments, styled with Tailwind CSS.
-
-<div>
-  <img src="static/images/wallet.jpg" alt="Wallet" width="260" />
-  <img src="static/images/QRCODE.jpg" alt="QR" width="260" />
-  <img src="media/chais/kulhadchai.jpg" alt="Kulhad Chai" width="260" />
-</div>
 
 ### Features
 - Browse chai catalog with images, search, and details
