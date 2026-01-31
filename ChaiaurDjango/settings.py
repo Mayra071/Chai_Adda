@@ -23,9 +23,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-m9s@twa%@=890*o=6%)!l_-+lrv(0(boy_o&!ti3+n55wl#kn8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '.onrender.com',
+]
+
+# for csrf error on render deployment
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
+]
+
+
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
 # Application definition
@@ -43,6 +56,7 @@ INSTALLED_APPS = [
     'contacts',
     'order',
     'payment',
+    
 ]
 
 TAILWIND_APP_NAME='theme'
@@ -58,6 +72,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 ROOT_URLCONF = 'ChaiaurDjango.urls'
@@ -127,9 +143,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 
-
-
-STATIC_URL = 'static/'
 STATICFILES_DIRS =[os.path.join(BASE_DIR,'static')]
 
 
