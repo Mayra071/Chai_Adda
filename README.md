@@ -101,11 +101,14 @@ See `theme/static_src/package.json`:
 - `npm run build` – production build to `theme/static/css/dist/styles.css`
 
 ### Web Pages
-<div style="display:flex; gap:12px; flex-wrap:wrap;">
-  <img src="media/WebSC/Chai_page.png" width="260"/>
-  <img src="media/WebSC/Order_page.png" width="260"/>
-  <img src="media/WebSC/Payment_page.png" width="260"/>
-  <img src="media/WebSC/Store_page.png" width="260"/>
+<div>
+  <img src="media/WebSC/Chai_page.png" width="100%" />
+  <br/><br/>
+  <img src="media/WebSC/Order_page.png" width="100%" />
+  <br/><br/>
+  <img src="media/WebSC/Payment_page.png" width="100%" />
+  <br/><br/>
+  <img src="media/WebSC/Store_page.png" width="100%" />
 </div>
 
 
